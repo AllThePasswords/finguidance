@@ -20,6 +20,7 @@ interface GuidanceEditorProps {
   onEnable?: () => void;
   onImprove?: () => void;
   isNew?: boolean;
+  isAccordion?: boolean;
 }
 
 export function GuidanceEditor({
@@ -34,6 +35,7 @@ export function GuidanceEditor({
   onDelete,
   onEnable,
   isNew,
+  isAccordion,
 }: GuidanceEditorProps) {
   const meta = CATEGORY_META[category];
 
@@ -87,45 +89,9 @@ export function GuidanceEditor({
     setOriginalContent("");
   }, [originalContent, onContentChange]);
 
-  return (
-    <div className="bg-base-module border border-neutral-border rounded-large overflow-hidden shadow-level-1 animate-in">
-      {/* Header — title + enabled badge inline */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-border">
-        <div className="flex items-center gap-2 flex-1 min-w-0">
-          {isNew ? (
-            <input
-              className="text-[14px] font-semibold text-text-default bg-transparent border-none outline-none placeholder:text-text-disabled flex-1 min-w-0"
-              placeholder="Guidance title..."
-              value={draftTitle}
-              onChange={(e) => onTitleChange(e.target.value)}
-              autoFocus
-            />
-          ) : (
-            <input
-              className="text-[14px] font-semibold text-text-default bg-transparent border-none outline-none flex-1 min-w-0"
-              value={draftTitle}
-              onChange={(e) => onTitleChange(e.target.value)}
-            />
-          )}
-          {rule && (
-            <span
-              className={`text-[11px] px-2 py-0.5 rounded-max font-medium shrink-0 ${
-                rule.enabled ? "bg-success-container text-success-fill" : "bg-neutral-container text-text-muted"
-              }`}
-            >
-              {rule.enabled ? "Enabled" : "Not enabled"}
-            </span>
-          )}
-        </div>
-        <button onClick={onCancel} className="hover:opacity-70 transition-opacity duration-200 p-1 ml-2 shrink-0">
-          {isNew ? (
-            <img src="/icons/close.svg" alt="Close" className="w-[11px] h-[11px]" />
-          ) : (
-            <img src="/icons/disclose.svg" alt="Collapse" className="w-3 h-[7px] rotate-180" />
-          )}
-        </button>
-      </div>
-
+  /* Shared body: textarea + improve banner + templates modal + action bar */
+  const editorBody = (
+    <>
       {/* Content */}
       <div className="p-4">
         <textarea
@@ -138,7 +104,6 @@ export function GuidanceEditor({
           value={draftContent}
           onChange={(e) => {
             onContentChange(e.target.value);
-            // If user manually edits during improved state, revert to idle
             if (improveState === "improved") {
               setImproveState("idle");
             }
@@ -148,7 +113,7 @@ export function GuidanceEditor({
         />
       </div>
 
-      {/* "We've rephrased" banner — shown in improved state */}
+      {/* "We've rephrased" banner */}
       {improveState === "improved" && (
         <div className="mx-4 mb-3 animate-fade-up">
           <button
@@ -191,10 +156,9 @@ export function GuidanceEditor({
         />
       )}
 
-      {/* Bottom bar — templates row OR action bar, same height slot */}
+      {/* Bottom bar */}
       <div className="flex items-center justify-between px-4 py-3 bg-base-module">
         {isNew && !draftTitle.trim() && !draftContent.trim() && improveState === "idle" ? (
-          /* Empty new rule: show example chips */
           <div className="flex items-center gap-2 flex-wrap animate-in">
             <span className="text-[14px] leading-5 text-text-disabled">Examples</span>
             {meta.examples.slice(0, 3).map((ex) => (
@@ -226,7 +190,6 @@ export function GuidanceEditor({
             )}
           </div>
         ) : improveState === "improved" ? (
-          /* Improved state actions */
           <>
             <div className="flex items-center gap-2 animate-in">
               <button className="flex items-center gap-1.5 text-[13px] text-text-muted hover:text-text-default px-2 py-1.5 rounded-max transition-colors duration-200">
@@ -257,7 +220,6 @@ export function GuidanceEditor({
             </div>
           </>
         ) : (
-          /* Idle / Checking state actions */
           <>
             <div className="flex items-center gap-2 animate-in">
               {improveState === "checking" ? (
@@ -343,6 +305,37 @@ export function GuidanceEditor({
           </>
         )}
       </div>
+    </>
+  );
+
+  // Accordion mode: body only, wrapper provided by RuleAccordion
+  if (isAccordion) {
+    return (
+      <div className="border-t border-neutral-border">
+        {editorBody}
+      </div>
+    );
+  }
+
+  // Standalone mode (new rule): full container with header
+  return (
+    <div className="bg-base-module border border-neutral-border rounded-large overflow-hidden shadow-level-1 animate-in">
+      {/* Header — title input + close button */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-border">
+        <div className="flex items-center gap-2 flex-1 min-w-0">
+          <input
+            className="text-[14px] font-semibold text-text-default bg-transparent border-none outline-none placeholder:text-text-disabled flex-1 min-w-0"
+            placeholder="Guidance title..."
+            value={draftTitle}
+            onChange={(e) => onTitleChange(e.target.value)}
+            autoFocus
+          />
+        </div>
+        <button onClick={onCancel} className="hover:opacity-70 transition-opacity duration-200 p-1 ml-2 shrink-0">
+          <img src="/icons/close.svg" alt="Close" className="w-[11px] h-[11px]" />
+        </button>
+      </div>
+      {editorBody}
     </div>
   );
 }

@@ -306,22 +306,22 @@ export function GuidanceEditor({
               {onDelete && improveState === "idle" && (
                 <button
                   onClick={onDelete}
-                  className="text-text-disabled hover:text-error-fill p-1.5 transition-colors duration-200"
+                  className="flex items-center justify-center w-8 h-8 rounded-full bg-neutral-container hover:bg-neutral-container-emphasis transition-colors duration-200"
                   title="Delete"
                 >
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M6 4V3a1 1 0 011-1h2a1 1 0 011 1v1M5 4v8a1 1 0 001 1h4a1 1 0 001-1V4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  <img src="/icons/trash.svg" alt="Delete" className="w-3.5 h-3.5" />
                 </button>
               )}
               <button
                 onClick={onCancel}
-                className="text-[13px] text-text-muted hover:text-text-default px-3 py-1.5 rounded-max transition-colors duration-200"
+                className="text-[13px] font-semibold text-text-default bg-neutral-container hover:bg-neutral-container-emphasis px-3 py-1.5 rounded-max transition-colors duration-200"
               >
                 Cancel
               </button>
               {onEnable && rule && !rule.enabled && improveState === "idle" && (
                 <button
                   onClick={onEnable}
-                  className="flex items-center gap-1.5 text-[13px] font-semibold text-text-default bg-base-module border border-neutral-border hover:bg-neutral-container px-3 py-1.5 rounded-max transition-colors duration-200"
+                  className="flex items-center gap-1.5 text-[13px] font-semibold text-text-default bg-neutral-container hover:bg-neutral-container-emphasis px-3 py-1.5 rounded-max transition-colors duration-200"
                 >
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 2l7 4-7 4V2z" fill="currentColor"/></svg>
                   Enable

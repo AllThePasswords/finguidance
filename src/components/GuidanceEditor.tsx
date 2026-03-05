@@ -117,8 +117,8 @@ export function GuidanceEditor({
             </span>
           )}
         </div>
-        <button onClick={onCancel} className="text-text-disabled hover:text-text-muted transition-colors duration-200 p-1 ml-2 shrink-0">
-          <img src="/icons/disclose.svg" alt="" className="w-3 h-[7px] transition-transform duration-200" />
+        <button onClick={onCancel} className="hover:opacity-70 transition-opacity duration-200 p-1 ml-2 shrink-0">
+          <img src="/icons/close.svg" alt="Close" className="w-[11px] h-[11px]" />
         </button>
       </div>
 

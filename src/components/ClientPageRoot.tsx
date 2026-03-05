@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useRef, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconRail } from "@/components/IconRail";
 import { Sidebar } from "@/components/Sidebar";
@@ -21,6 +21,20 @@ function GuidancePageInner() {
   const seeded = searchParams.get("seeded") === "1";
   const store = useGuidanceStore(!seeded);
   const [showPreview, setShowPreview] = useState(true);
+  const [showLearnMenu, setShowLearnMenu] = useState(false);
+  const learnRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (learnRef.current && !learnRef.current.contains(e.target as Node)) {
+        setShowLearnMenu(false);
+      }
+    }
+    if (showLearnMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [showLearnMenu]);
 
   return (
     <div className="flex h-screen overflow-hidden bg-base-backdrop">
@@ -47,14 +61,45 @@ function GuidancePageInner() {
               </span>
             </div>
             <div className="flex items-center gap-1">
-              <button
-                className="flex items-center gap-1 text-[14px] font-semibold text-text-default bg-neutral-container hover:bg-neutral-container-emphasis h-8 min-w-[32px] px-3 rounded-max transition-colors duration-200"
-                onClick={() => setShowPreview(!showPreview)}
-              >
-                <img src="/icons/knowledge-learn.svg" alt="" className="w-4 h-4" />
-                Learn
-                <svg width="8" height="5" viewBox="0 0 8 5" fill="none" className="shrink-0 ml-0.5"><path d="M1 1l3 3 3-3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </button>
+              {/* Learn dropdown */}
+              <div ref={learnRef} className="relative">
+                <button
+                  className="flex items-center gap-1 text-[14px] font-semibold text-text-default bg-neutral-container hover:bg-neutral-container-emphasis h-8 min-w-[32px] px-3 rounded-max transition-colors duration-200"
+                  onClick={() => setShowLearnMenu(!showLearnMenu)}
+                >
+                  <img src="/icons/knowledge-learn.svg" alt="" className="w-4 h-4" />
+                  Learn
+                  <svg width="8" height="5" viewBox="0 0 8 5" fill="none" className="shrink-0 ml-0.5"><path d="M1 1l3 3 3-3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </button>
+                {showLearnMenu && (
+                  <div className="absolute right-0 top-full mt-1 w-52 bg-white rounded-[12px] shadow-level-1 py-1.5 z-20 animate-fade-up">
+                    <button className="flex items-center gap-2.5 w-full px-4 py-2.5 text-[14px] text-text-default hover:bg-neutral-container/50 transition-colors">
+                      <img src="/icons/knowledge-learn.svg" alt="" className="w-4 h-4" />
+                      Get started
+                    </button>
+                    <button className="flex items-center gap-2.5 w-full px-4 py-2.5 text-[14px] text-text-default hover:bg-neutral-container/50 transition-colors">
+                      <img src="/icons/knowledge-learn.svg" alt="" className="w-4 h-4" />
+                      Best practices
+                    </button>
+                    <button className="flex items-center gap-2.5 w-full px-4 py-2.5 text-[14px] text-text-default hover:bg-neutral-container/50 transition-colors">
+                      <img src="/icons/knowledge-learn.svg" alt="" className="w-4 h-4" />
+                      Fin&apos;s basics
+                    </button>
+                    <button className="flex items-center gap-2.5 w-full px-4 py-2.5 text-[14px] text-text-default hover:bg-neutral-container/50 transition-colors">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="w-4 h-4 shrink-0"><path d="M8 1L1 5l7 4 7-4-7-4zM1 8l7 4 7-4M1 11l7 4 7-4" stroke="#1A1A1A" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      Learn more
+                    </button>
+                  </div>
+                )}
+              </div>
+              {!showPreview && (
+                <button
+                  className="flex items-center gap-1 text-[14px] font-semibold text-text-default bg-neutral-container hover:bg-neutral-container-emphasis h-8 min-w-[32px] px-3 rounded-max transition-colors duration-200"
+                  onClick={() => setShowPreview(true)}
+                >
+                  Preview
+                </button>
+              )}
             </div>
           </div>
         </div>

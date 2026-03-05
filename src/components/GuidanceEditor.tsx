@@ -2,6 +2,8 @@
 
 import { useState, useCallback } from "react";
 import { GuidanceRule, GuidanceCategory, CATEGORY_META } from "@/lib/types";
+import { ChipTooltip } from "./ChipTooltip";
+import { TemplatesModal } from "./TemplatesModal";
 
 type ImproveState = "idle" | "checking" | "improved";
 
@@ -40,6 +42,7 @@ export function GuidanceEditor({
   const [improvementReason, setImprovementReason] = useState("");
   const [originalContent, setOriginalContent] = useState("");
   const [showReason, setShowReason] = useState(false);
+  const [showTemplatesModal, setShowTemplatesModal] = useState(false);
 
   const handleImprove = useCallback(async () => {
     if (!draftContent.trim()) return;
@@ -85,7 +88,7 @@ export function GuidanceEditor({
   }, [originalContent, onContentChange]);
 
   return (
-    <div className="bg-base-module border border-neutral-border rounded-small overflow-hidden shadow-level-0 animate-in">
+    <div className="bg-base-module border border-neutral-border rounded-large overflow-hidden shadow-level-1 animate-in">
       {/* Header — title + enabled badge inline */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-border">
         <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -115,7 +118,9 @@ export function GuidanceEditor({
           )}
         </div>
         <button onClick={onCancel} className="text-text-disabled hover:text-text-muted transition-colors duration-200 p-1 ml-2 shrink-0">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="rotate-90 transition-transform duration-200">
+            <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
         </button>
       </div>
 
@@ -172,28 +177,56 @@ export function GuidanceEditor({
         </div>
       )}
 
-      {/* Example chips (for new rules) */}
-      {isNew && improveState === "idle" && (
-        <div className="px-4 pb-3 flex items-center gap-2 flex-wrap">
-          <span className="text-[12px] text-text-disabled">Examples</span>
-          {meta.examples.map((ex) => (
-            <button
-              key={ex}
-              onClick={() => onTitleChange(ex)}
-              className="text-[12px] px-3 py-1 bg-neutral-container hover:bg-neutral-container-emphasis text-text-default rounded-max transition-colors duration-200"
-            >
-              {ex}
-            </button>
-          ))}
-        </div>
+      {/* Templates modal */}
+      {showTemplatesModal && (
+        <TemplatesModal
+          category={category}
+          onSelect={(example) => {
+            onTitleChange(example.title);
+            onContentChange(example.content);
+          }}
+          onClose={() => setShowTemplatesModal(false)}
+        />
       )}
 
-      {/* Actions — changes based on improve state */}
-      <div className="flex items-center justify-between px-4 py-3 border-t border-neutral-border bg-base-module-subtle/50">
-        {improveState === "improved" ? (
+      {/* Bottom bar — templates row OR action bar, same height slot */}
+      <div className="flex items-center justify-between px-4 py-3 bg-base-module">
+        {isNew && !draftTitle.trim() && !draftContent.trim() && improveState === "idle" ? (
+          /* Empty new rule: show example chips */
+          <div className="flex items-center gap-2 flex-wrap animate-in">
+            <span className="text-[14px] leading-5 text-text-disabled">Examples</span>
+            {meta.examples.slice(0, 3).map((ex) => (
+              <ChipTooltip key={ex.title} title={ex.title} content={ex.content}>
+                <button
+                  onClick={() => {
+                    onTitleChange(ex.title);
+                    onContentChange(ex.content);
+                  }}
+                  className="text-[14px] leading-5 font-bold px-4 py-2 border border-neutral-border hover:border-neutral-border-emphasis hover:bg-neutral-container/30 text-text-default rounded-max transition-colors duration-200"
+                >
+                  {ex.title}
+                </button>
+              </ChipTooltip>
+            ))}
+            {meta.examples.length > 3 && (
+              <ChipTooltip title="All templates">
+                <button
+                  onClick={() => setShowTemplatesModal(true)}
+                  className="flex items-center justify-center w-9 h-9 border border-neutral-border hover:border-neutral-border-emphasis hover:bg-neutral-container/30 rounded-full transition-colors duration-200"
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <circle cx="4" cy="8" r="1.2" fill="currentColor" className="text-text-muted"/>
+                    <circle cx="8" cy="8" r="1.2" fill="currentColor" className="text-text-muted"/>
+                    <circle cx="12" cy="8" r="1.2" fill="currentColor" className="text-text-muted"/>
+                  </svg>
+                </button>
+              </ChipTooltip>
+            )}
+          </div>
+        ) : improveState === "improved" ? (
           /* Improved state actions */
           <>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 animate-in">
               <button className="flex items-center gap-1.5 text-[13px] text-text-muted hover:text-text-default px-2 py-1.5 rounded-max transition-colors duration-200">
                 Give feedback
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -201,7 +234,7 @@ export function GuidanceEditor({
                 </svg>
               </button>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 animate-in">
               <button
                 onClick={handleViewOriginal}
                 className="flex items-center gap-1.5 text-[13px] text-text-muted hover:text-text-default px-3 py-1.5 rounded-max transition-colors duration-200"
@@ -224,48 +257,54 @@ export function GuidanceEditor({
         ) : (
           /* Idle / Checking state actions */
           <>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 animate-in">
               {improveState === "checking" ? (
-                <div className="flex items-center gap-1.5 text-[13px] font-semibold text-text-muted px-3 py-1.5">
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="animate-spin-slow">
-                    <path d="M8 2l1.09 3.36h3.53l-2.86 2.08 1.1 3.36L8 8.72l-2.86 2.08 1.1-3.36L3.38 5.36h3.53L8 2z" fill="currentColor"/>
-                    <path d="M13 1l.5 1.5H15l-1.2.87.46 1.42L13 3.92l-1.26.87.46-1.42L11 2.5h1.5L13 1z" fill="currentColor" opacity="0.7"/>
+                <button
+                  onClick={handleViewOriginal}
+                  className="btn-gradient-border flex items-center gap-1.5 text-[13px] font-semibold text-text-default px-3 py-1.5 rounded-max transition-all duration-200 hover:bg-neutral-container/50"
+                >
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                    <rect x="3" y="3" width="10" height="10" rx="2" fill="url(#stop-grad)"/>
+                    <defs>
+                      <linearGradient id="stop-grad" x1="0" y1="0" x2="16" y2="16" gradientUnits="userSpaceOnUse">
+                        <stop stopColor="#FCAE88"/>
+                        <stop offset="0.5" stopColor="#DB57A2"/>
+                        <stop offset="1" stopColor="#620777"/>
+                      </linearGradient>
+                    </defs>
                   </svg>
-                  Checking content...
-                </div>
+                  Stop
+                </button>
               ) : (
                 <>
-                  {!isNew && (
-                    <button
-                      onClick={handleImprove}
-                      disabled={!draftContent.trim()}
-                      className="btn-gradient-border flex items-center gap-1.5 text-[13px] font-semibold text-text-default px-3 py-1.5 rounded-max transition-all duration-200 hover:bg-neutral-container/50 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                        <path d="M8 2l1.09 3.36h3.53l-2.86 2.08 1.1 3.36L8 8.72l-2.86 2.08 1.1-3.36L3.38 5.36h3.53L8 2z" fill="url(#improve-grad)"/>
-                        <path d="M13 1l.5 1.5H15l-1.2.87.46 1.42L13 3.92l-1.26.87.46-1.42L11 2.5h1.5L13 1z" fill="url(#improve-grad)" opacity="0.7"/>
-                        <path d="M3.5 11l.36 1.09h1.14l-.93.68.36 1.09L3.5 13.18l-.93.68.36-1.09-.93-.68h1.14L3.5 11z" fill="url(#improve-grad)" opacity="0.5"/>
-                        <defs>
-                          <linearGradient id="improve-grad" x1="0" y1="0" x2="16" y2="16" gradientUnits="userSpaceOnUse">
-                            <stop stopColor="#FCAE88"/>
-                            <stop offset="0.5" stopColor="#DB57A2"/>
-                            <stop offset="1" stopColor="#620777"/>
-                          </linearGradient>
-                        </defs>
-                      </svg>
-                      Improve
-                    </button>
-                  )}
-                  {!isNew && (
-                    <button className="text-[13px] text-text-muted hover:text-text-default px-2 py-1.5 transition-colors duration-200">
-                      Examples
-                    </button>
-                  )}
+                  <button
+                    onClick={handleImprove}
+                    disabled={!draftContent.trim()}
+                    className="btn-gradient-border flex items-center gap-1.5 text-[13px] font-semibold text-text-default px-3 py-1.5 rounded-max transition-all duration-200 hover:bg-neutral-container/50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                      <path d="M15.7775 5.68248L12.7575 4.6725C12.0875 4.4525 11.5675 3.92249 11.3375 3.25249L10.3275 0.2325C10.2275 -0.0775 9.7875 -0.0775 9.6875 0.2325L8.6775 3.25249C8.4575 3.92249 7.9275 4.4525 7.2575 4.6725L4.2375 5.68248C3.9275 5.78248 3.9275 6.2225 4.2375 6.3225L7.2575 7.33248C7.9275 7.55248 8.4575 8.08249 8.6775 8.75249L9.6875 11.7725C9.7875 12.0825 10.2275 12.0825 10.3275 11.7725L11.3375 8.75249C11.5575 8.08249 12.0875 7.55248 12.7575 7.33248L15.7775 6.3225C16.0875 6.2225 16.0875 5.78248 15.7775 5.68248ZM7.2875 11.9525L5.8775 11.4825C5.2375 11.2725 4.7375 10.7725 4.5275 10.1325L4.0575 8.72249C3.9575 8.43249 3.5475 8.43249 3.4475 8.72249C3.3075 9.13249 3.1375 9.64249 2.9775 10.1325C2.7675 10.7725 2.2675 11.2725 1.6275 11.4825L0.2175 11.9525C-0.0725 12.0525 -0.0725 12.4625 0.2175 12.5625C0.6275 12.7025 1.1375 12.8725 1.6275 13.0325C2.2675 13.2425 2.7675 13.7425 2.9775 14.3825C3.1375 14.8725 3.3075 15.3825 3.4475 15.7925C3.5475 16.0825 3.9575 16.0825 4.0575 15.7925L4.5275 14.3825C4.7375 13.7425 5.2375 13.2425 5.8775 13.0325C6.3675 12.8725 6.8775 12.7025 7.2875 12.5625C7.5775 12.4625 7.5775 12.0525 7.2875 11.9525Z" fill="url(#improve-grad)"/>
+                      <defs>
+                        <linearGradient id="improve-grad" x1="0" y1="0" x2="16" y2="16" gradientUnits="userSpaceOnUse">
+                          <stop stopColor="#FCAE88"/>
+                          <stop offset="0.5" stopColor="#DB57A2"/>
+                          <stop offset="1" stopColor="#620777"/>
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                    Improve
+                  </button>
+                  <button
+                    onClick={() => setShowTemplatesModal(true)}
+                    className="text-[13px] text-text-muted hover:text-text-default px-2 py-1.5 transition-colors duration-200"
+                  >
+                    Examples
+                  </button>
                 </>
               )}
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 animate-in">
               {onDelete && improveState === "idle" && (
                 <button
                   onClick={onDelete}

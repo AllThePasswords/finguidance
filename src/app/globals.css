@@ -101,6 +101,10 @@ body {
   animation: fade-up 0.2s ease-out;
 }
 
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+
 /* Tooltip — above source (fades up from source) */
 @keyframes tooltip-fade-up {
   from { opacity: 0; transform: translate(-50%, calc(-100% + 6px)); }

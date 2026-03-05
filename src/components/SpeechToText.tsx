@@ -3,7 +3,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 
 // ─── Live Waveform Visualization ─────────────────────────────
-// Adapted from conversationfirst/ChatInput.tsx LiveWaveform.
 // Uses AudioContext + AnalyserNode to read frequency data from
 // the mic stream, computes RMS amplitude, and paints scrolling
 // bars on a HiDPI canvas via requestAnimationFrame.
@@ -259,6 +258,8 @@ export function useSpeechToText(
 }
 
 // ─── Listening Bar UI ────────────────────────────────────────
+// Designed to render INSIDE the same input container, replacing
+// the text input + icon row with cancel | waveform | send arrow.
 
 interface VoiceListeningBarProps {
   micStream: MediaStream | null;
@@ -272,38 +273,38 @@ export function VoiceListeningBar({
   onCancel,
 }: VoiceListeningBarProps) {
   return (
-    <div className="flex items-center gap-2 bg-base-inputs border-2 border-neutral-border rounded-[100px] px-2 py-2">
-      {/* Cancel */}
+    <div className="flex items-center gap-2 animate-fade-in">
+      {/* Cancel (X) */}
       <button
         onClick={onCancel}
-        className="flex items-center justify-center w-9 h-9 rounded-full bg-neutral-container hover:bg-neutral-container-emphasis transition-colors duration-150 shrink-0 text-text-muted"
+        className="flex items-center justify-center w-8 h-8 rounded-full bg-neutral-container hover:bg-neutral-container-emphasis transition-colors duration-150 shrink-0 text-text-muted"
         title="Cancel"
         aria-label="Cancel recording"
       >
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
           <path
-            d="M1 1l10 10M11 1L1 11"
+            d="M1 1l8 8M9 1L1 9"
             stroke="currentColor"
-            strokeWidth="2"
+            strokeWidth="1.8"
             strokeLinecap="round"
           />
         </svg>
       </button>
 
-      {/* Waveform */}
-      <div className="flex-1 h-9 overflow-hidden">
+      {/* Waveform — fills the center like text would */}
+      <div className="flex-1 h-10 overflow-hidden">
         <LiveWaveform stream={micStream} />
       </div>
 
-      {/* Stop / Send */}
+      {/* Stop & Send — same send arrow button, black */}
       <button
         onClick={onStop}
-        className="flex items-center justify-center w-9 h-9 rounded-full bg-[#0066FF] text-white hover:bg-[#0055DD] transition-colors duration-150 shrink-0"
+        className="flex items-center justify-center w-8 h-8 rounded-full bg-neutral-fill text-white hover:bg-neutral-fill-emphasis transition-colors duration-150 shrink-0"
         title="Stop and send"
         aria-label="Stop recording and send"
       >
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-          <rect width="10" height="10" rx="1.5" fill="currentColor" />
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 12V4M8 4l-3.5 3.5M8 4l3.5 3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </button>
     </div>

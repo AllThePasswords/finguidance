@@ -310,63 +310,59 @@ export function PreviewPanel({ rules, onClose }: PreviewPanelProps) {
         </div>
       )}
 
-      {/* Chat input — voice listening bar or standard text input */}
+      {/* Chat input — same container morphs between text input and voice listening */}
       <div className="px-4 pb-4 pt-0">
-        {isListening ? (
-          <>
+        <div className="bg-base-inputs border-2 border-neutral-border focus-within:border-neutral-fill rounded-[16px] pl-4 pr-3 pt-3 pb-3 transition-all duration-300">
+          {isListening ? (
             <VoiceListeningBar
               micStream={micStream}
               onStop={stopListening}
               onCancel={cancelListening}
             />
-            <div className="flex items-center justify-center mt-2 gap-1.5">
-              <img src="/icons/ai-automation.svg" alt="" className="w-3.5 h-3.5 opacity-40" />
-              <span className="text-[11px] text-text-disabled">Powered by Fin</span>
-            </div>
-          </>
-        ) : (
-          <div className="bg-base-inputs border-2 border-neutral-border focus-within:border-neutral-fill rounded-[16px] pl-4 pr-3 pt-3 pb-3 transition-colors duration-200">
-            <input
-              className="w-full bg-transparent text-[14px] outline-none placeholder:text-text-disabled text-text-default mb-2"
-              placeholder={isProcessing ? "Transcribing..." : "Ask a question..."}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSend()}
-              disabled={isStreaming || isProcessing}
-            />
-            <div className="flex items-center gap-3">
-              {/* Attach */}
-              <button className="text-text-disabled hover:text-text-muted transition-colors duration-200">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M8.5 5v6a2 2 0 004 0V5.5a3.5 3.5 0 00-7 0V12a5 5 0 0010 0V5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
-              </button>
-              {/* Emoji */}
-              <button className="text-text-disabled hover:text-text-muted transition-colors duration-200">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" strokeWidth="1.3"/><path d="M6 11s1.2 1.8 3 1.8 3-1.8 3-1.8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><circle cx="6.75" cy="7.5" r="0.85" fill="currentColor"/><circle cx="11.25" cy="7.5" r="0.85" fill="currentColor"/></svg>
-              </button>
-              {/* GIF */}
-              <button className="text-text-disabled hover:text-text-muted transition-colors duration-200">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="4" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="1.3"/><text x="9" y="11" textAnchor="middle" fill="currentColor" fontSize="6" fontWeight="700">GIF</text></svg>
-              </button>
-              {/* Microphone */}
-              <button
-                onClick={startListening}
+          ) : (
+            <>
+              <input
+                className="w-full bg-transparent text-[14px] outline-none placeholder:text-text-disabled text-text-default mb-2"
+                placeholder={isProcessing ? "Transcribing..." : "Ask a question..."}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSend()}
                 disabled={isStreaming || isProcessing}
-                className="text-text-disabled hover:text-text-muted transition-colors duration-200 disabled:opacity-50"
-              >
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="7" y="2" width="4" height="8" rx="2" stroke="currentColor" strokeWidth="1.3"/><path d="M5 9a4 4 0 008 0" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><path d="M9 13v3M7 16h4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
-              </button>
-              <div className="flex-1" />
-              {/* Send */}
-              <button
-                onClick={() => handleSend()}
-                disabled={!input.trim() || isStreaming || isProcessing}
-                className="flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-200 disabled:bg-neutral-container disabled:text-text-disabled bg-neutral-fill text-white hover:bg-neutral-fill-emphasis"
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 12V4M8 4l-3.5 3.5M8 4l3.5 3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </button>
-            </div>
-          </div>
-        )}
+              />
+              <div className="flex items-center gap-3">
+                {/* Attach */}
+                <button className="text-text-disabled hover:text-text-muted transition-colors duration-200">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M8.5 5v6a2 2 0 004 0V5.5a3.5 3.5 0 00-7 0V12a5 5 0 0010 0V5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                </button>
+                {/* Emoji */}
+                <button className="text-text-disabled hover:text-text-muted transition-colors duration-200">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" strokeWidth="1.3"/><path d="M6 11s1.2 1.8 3 1.8 3-1.8 3-1.8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><circle cx="6.75" cy="7.5" r="0.85" fill="currentColor"/><circle cx="11.25" cy="7.5" r="0.85" fill="currentColor"/></svg>
+                </button>
+                {/* GIF */}
+                <button className="text-text-disabled hover:text-text-muted transition-colors duration-200">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="4" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="1.3"/><text x="9" y="11" textAnchor="middle" fill="currentColor" fontSize="6" fontWeight="700">GIF</text></svg>
+                </button>
+                {/* Microphone */}
+                <button
+                  onClick={startListening}
+                  disabled={isStreaming || isProcessing}
+                  className="text-text-disabled hover:text-text-muted transition-colors duration-200 disabled:opacity-50"
+                >
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="7" y="2" width="4" height="8" rx="2" stroke="currentColor" strokeWidth="1.3"/><path d="M5 9a4 4 0 008 0" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><path d="M9 13v3M7 16h4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                </button>
+                <div className="flex-1" />
+                {/* Send */}
+                <button
+                  onClick={() => handleSend()}
+                  disabled={!input.trim() || isStreaming || isProcessing}
+                  className="flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-200 disabled:bg-neutral-container disabled:text-text-disabled bg-neutral-fill text-white hover:bg-neutral-fill-emphasis"
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 12V4M8 4l-3.5 3.5M8 4l3.5 3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </aside>
   );

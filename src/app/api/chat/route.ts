@@ -1,9 +1,13 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { GuidanceRule } from "@/lib/types";
 
-const anthropic = new Anthropic();
-
 export async function POST(req: Request) {
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return new Response("ANTHROPIC_API_KEY is not configured", { status: 500 });
+  }
+
+  const anthropic = new Anthropic();
+
   const { messages, rules } = (await req.json()) as {
     messages: { role: "user" | "assistant"; content: string }[];
     rules: GuidanceRule[];

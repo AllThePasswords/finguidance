@@ -1,17 +1,5 @@
 "use client";
 
-import {
-  Bot,
-  Eye,
-  BookOpen,
-  MessageSquare,
-  BarChart3,
-  Workflow,
-  LayoutGrid,
-  ChevronDown,
-  ChevronRight,
-} from "lucide-react";
-
 interface SidebarProps {
   totalGuidanceCount: number;
 }
@@ -19,7 +7,7 @@ interface SidebarProps {
 export function Sidebar({ totalGuidanceCount }: SidebarProps) {
   return (
     <aside className="w-[247px] bg-base-module-subtle rounded-large shadow-level-0 flex flex-col h-screen shrink-0 overflow-clip">
-      {/* Header */}
+      {/* Header - p-16 from Figma */}
       <div className="flex items-start justify-between p-4">
         <div className="flex items-center pl-2">
           <h2 className="text-[20px] font-semibold text-text-default tracking-[-0.5px] leading-6">
@@ -28,16 +16,14 @@ export function Sidebar({ totalGuidanceCount }: SidebarProps) {
         </div>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 px-3 space-y-1 text-[13px] overflow-y-auto">
-        {/* Fin AI Agent section */}
-        <div className="flex items-center justify-between px-3 py-1 rounded-small">
-          <div className="flex items-center gap-2 h-6">
-            <Bot className="w-4 h-4 text-text-default" />
-            <span className="font-semibold text-text-default">Fin AI Agent</span>
-          </div>
-          <ChevronDown className="w-4 h-4 text-text-muted" />
-        </div>
+      {/* Navigation - px-12 gap-4 from Figma */}
+      <nav className="flex-1 px-3 flex flex-col gap-1 text-[13px] overflow-y-auto">
+        {/* Fin AI Agent section - expandable */}
+        <SectionItem
+          iconSrc="/icons/ai-automation.svg"
+          label="Fin AI Agent"
+          expanded
+        />
 
         {/* Sub items */}
         <div className="flex flex-col">
@@ -54,9 +40,9 @@ export function Sidebar({ totalGuidanceCount }: SidebarProps) {
         </div>
 
         {/* Other sections */}
-        <div className="pt-2 space-y-0.5">
-          <SectionItem icon={Workflow} label="Workflows" />
-          <SectionItem icon={LayoutGrid} label="Basics" />
+        <div className="pt-2 flex flex-col gap-1">
+          <SectionItem iconSrc="/icons/integrations.svg" label="Workflows" />
+          <SectionItem iconSrc="/icons/home.svg" label="Basics" />
         </div>
       </nav>
     </aside>
@@ -78,23 +64,24 @@ function SubItem({
 }) {
   return (
     <button
-      className={`w-full flex items-center gap-[15px] pl-[19px] pr-3 rounded-small transition-colors ${
+      className={`w-full flex items-center gap-2 pl-[19px] pr-3 rounded-small transition-all duration-200 ${
         active
           ? "bg-base-module border border-neutral-border shadow-level-0"
           : "hover:bg-neutral-container"
       }`}
     >
-      {/* Vertical divider */}
+      {/* Vertical divider - 2px wide from Figma */}
       <div className="flex items-center h-8 w-[2px] shrink-0">
         <div
-          className={`w-[2px] rounded-full ${
+          className={`w-[2px] rounded-full transition-all duration-200 ${
             active ? "h-6 bg-accent-fill" : "h-8 bg-neutral-border"
           }`}
         />
       </div>
-      <div className="flex-1 flex items-center gap-[5px] h-8 overflow-clip">
+      {/* gap-15px from Figma */}
+      <div className="flex-1 flex items-center gap-[5px] h-8 overflow-clip" style={{ marginLeft: "13px" }}>
         <span
-          className={`text-[13px] leading-5 truncate ${
+          className={`text-[13px] leading-5 truncate transition-colors duration-200 ${
             active ? "text-text-default" : "text-text-muted"
           }`}
         >
@@ -110,20 +97,34 @@ function SubItem({
         <span className="text-[13px] text-text-muted shrink-0">{badge}</span>
       )}
       {external && (
-        <span className="text-text-muted text-[11px] shrink-0">↗</span>
+        <img src="/icons/thin-right-arrow.svg" alt="" className="w-3 h-3 opacity-40 shrink-0" />
       )}
     </button>
   );
 }
 
-function SectionItem({ icon: Icon, label }: { icon: React.ElementType; label: string }) {
+function SectionItem({
+  iconSrc,
+  label,
+  expanded,
+}: {
+  iconSrc: string;
+  label: string;
+  expanded?: boolean;
+}) {
   return (
-    <button className="w-full flex items-center justify-between px-3 py-1 h-8 rounded-small hover:bg-neutral-container transition-colors">
+    <button className="w-full flex items-center justify-between px-3 py-1 h-8 rounded-small hover:bg-neutral-container transition-colors duration-200">
       <div className="flex items-center gap-2 h-6">
-        <Icon className="w-4 h-4 text-text-default" />
-        <span className="font-semibold text-[13px] text-text-default">{label}</span>
+        <img src={iconSrc} alt="" className="w-4 h-4" />
+        <span className="font-semibold text-[13px] text-text-default leading-5">
+          {label}
+        </span>
       </div>
-      <ChevronRight className="w-4 h-4 text-text-muted" />
+      <img
+        src={expanded ? "/icons/thin-down-arrow.svg" : "/icons/thin-right-arrow.svg"}
+        alt=""
+        className="w-4 h-4 opacity-50"
+      />
     </button>
   );
 }

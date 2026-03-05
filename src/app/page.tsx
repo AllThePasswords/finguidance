@@ -7,7 +7,6 @@ import { CategorySection } from "@/components/CategorySection";
 import { PreviewPanel } from "@/components/PreviewPanel";
 import { useGuidanceStore } from "@/lib/store";
 import { GuidanceCategory } from "@/lib/types";
-import { Video } from "lucide-react";
 
 const CATEGORIES: GuidanceCategory[] = [
   "communication_style",
@@ -28,12 +27,15 @@ export default function GuidancePage() {
       {/* Sidebar navigation */}
       <Sidebar totalGuidanceCount={store.totalCount} />
 
-      {/* Focus module (main content) */}
-      <main className="flex-1 overflow-y-auto bg-base-module rounded-large shadow-level-0 m-0 ml-0">
-        {/* Page header */}
+      {/* Focus module (main content) - Figma: bg-white, rounded-large, shadow-level-0 */}
+      <main className="flex-1 overflow-y-auto bg-base-module rounded-large shadow-level-0">
+        {/* Page header - Figma: px-24 py-16 */}
         <div className="sticky top-0 z-10 bg-base-module border-b border-dashed border-neutral-border px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <button className="flex items-center justify-center w-8 h-8 rounded-max hover:bg-neutral-container transition-colors duration-200">
+                <img src="/icons/sidebar-close.svg" alt="" className="w-4 h-4" />
+              </button>
               <h1 className="text-[20px] font-semibold text-text-default tracking-[-0.5px] leading-6">
                 Guidance
               </h1>
@@ -41,17 +43,24 @@ export default function GuidancePage() {
                 Beta
               </span>
             </div>
-            <button
-              className="flex items-center gap-2 text-[14px] font-semibold text-text-default bg-neutral-container hover:bg-neutral-container-emphasis h-8 min-w-[32px] px-3 rounded-max transition-colors"
-              onClick={() => setShowPreview(!showPreview)}
-            >
-              <Video className="w-4 h-4" />
-              {showPreview ? "Hide Preview" : "Learn"}
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                className="flex items-center gap-1 text-[14px] font-semibold text-text-default bg-neutral-container hover:bg-neutral-container-emphasis h-8 min-w-[32px] px-2 rounded-max transition-colors duration-200"
+              >
+                <img src="/icons/new-window.svg" alt="" className="w-4 h-4" />
+              </button>
+              <button
+                className="flex items-center gap-1 text-[14px] font-semibold text-text-default bg-neutral-container hover:bg-neutral-container-emphasis h-8 min-w-[32px] px-3 rounded-max transition-colors duration-200"
+                onClick={() => setShowPreview(!showPreview)}
+              >
+                <img src="/icons/knowledge-learn.svg" alt="" className="w-4 h-4" />
+                {showPreview ? "Hide Preview" : "Show Preview"}
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Category sections */}
+        {/* Category sections - Figma: px-24 py-24 */}
         <div className="px-6 py-6 max-w-3xl">
           {CATEGORIES.map((cat) => (
             <CategorySection

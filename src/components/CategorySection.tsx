@@ -1,6 +1,5 @@
 "use client";
 
-import { Plus } from "lucide-react";
 import { GuidanceRule, GuidanceCategory, CATEGORY_META } from "@/lib/types";
 import { GuidanceRuleCard } from "./GuidanceRuleCard";
 import { GuidanceEditor } from "./GuidanceEditor";
@@ -45,7 +44,7 @@ export function CategorySection({
       {/* Section header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <span className="text-[14px]">{meta.icon}</span>
+          <img src={meta.iconPath} alt="" className="w-4 h-4 opacity-60" />
           <h2 className="text-[14px] font-semibold text-text-default">
             {meta.label}
           </h2>
@@ -53,9 +52,9 @@ export function CategorySection({
         </div>
         <button
           onClick={onStartCreate}
-          className="text-text-disabled hover:text-text-muted hover:bg-neutral-container p-1 rounded-small transition-colors"
+          className="flex items-center justify-center w-8 h-8 rounded-small text-text-disabled hover:text-text-muted hover:bg-neutral-container transition-all duration-200"
         >
-          <Plus className="w-4 h-4" />
+          <img src="/icons/new.svg" alt="Add" className="w-4 h-4 opacity-40" />
         </button>
       </div>
 
@@ -64,7 +63,7 @@ export function CategorySection({
         <div className="text-[13px] text-text-disabled py-2 pl-1">
           {meta.description}{" "}
           <button onClick={onStartCreate} className="text-accent-fill hover:underline">
-            See examples ›
+            See examples
           </button>
         </div>
       )}

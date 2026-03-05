@@ -1,62 +1,50 @@
 "use client";
 
-import {
-  LayoutGrid,
-  MessageSquare,
-  Bot,
-  Inbox,
-  BarChart3,
-  Send,
-  Users,
-  Settings,
-} from "lucide-react";
+const RAIL_ICONS = [
+  { src: "/icons/inbox.svg", label: "Inbox" },
+  { src: "/icons/outbound.svg", label: "Outbound" },
+  { src: "/icons/contacts.svg", label: "Contacts" },
+  { src: "/icons/knowledge.svg", label: "Knowledge" },
+  { src: "/icons/reporting.svg", label: "Reporting" },
+  { src: "/icons/outbound2.svg", label: "Messages" },
+];
 
 export function IconRail() {
   return (
     <aside className="w-[44px] bg-base-backdrop flex flex-col items-center justify-between py-1 shrink-0 h-screen">
-      {/* Top icons */}
+      {/* Top: logo + nav icons */}
       <div className="flex flex-col items-center w-full">
         {/* Logo */}
-        <div className="flex items-center justify-center h-16 w-full">
-          <div className="w-4 h-8 flex items-center justify-center">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <rect width="16" height="16" rx="3" fill="#1a1a1a" />
-              <path d="M4 4h8v2H4V4zm0 3h6v2H4V7zm0 3h8v2H4v-2z" fill="white" />
-            </svg>
-          </div>
+        <div className="flex items-center justify-center p-4 w-full">
+          <img src="/icons/mark.svg" alt="Intercom" className="w-4 h-4" />
         </div>
 
         {/* Nav icons */}
         <div className="flex flex-col items-center gap-1 w-full">
-          <RailIcon icon={LayoutGrid} />
-          <RailIcon icon={MessageSquare} />
-          <RailIcon icon={Bot} active />
-          <RailIcon icon={Inbox} />
-          <RailIcon icon={BarChart3} />
-          <RailIcon icon={Send} />
-          <RailIcon icon={Users} />
+          {RAIL_ICONS.map((icon) => (
+            <button
+              key={icon.label}
+              className="flex items-center justify-center w-8 h-8 rounded-small px-2 py-1 transition-colors hover:bg-neutral-container"
+              title={icon.label}
+            >
+              <img src={icon.src} alt={icon.label} className="w-4 h-4" />
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Bottom icons */}
+      {/* Bottom: settings + avatar */}
       <div className="flex flex-col items-center gap-1 pb-4 w-full">
-        <div className="flex items-center justify-center w-8 h-8 rounded-small bg-base-module border border-neutral-border shadow-level-0">
-          <Settings className="w-4 h-4 text-text-default" />
-        </div>
-        <div className="w-4 h-4 rounded-full bg-accent-fill" />
+        <button className="flex items-center justify-center w-8 h-8 rounded-small bg-base-module border border-neutral-border shadow-level-0 px-2 py-1 transition-colors hover:bg-neutral-container">
+          <img src="/icons/settings.svg" alt="Settings" className="w-4 h-4" />
+        </button>
+        <button className="flex items-center justify-center w-8 h-8 rounded-small px-2 py-1">
+          <div className="relative w-4 h-4">
+            <img src="/icons/avatar.svg" alt="Profile" className="w-4 h-4 rounded-full" />
+            <div className="absolute -bottom-0.5 -right-0.5 w-[6px] h-[6px] rounded-full bg-success-fill border border-base-backdrop" />
+          </div>
+        </button>
       </div>
     </aside>
-  );
-}
-
-function RailIcon({ icon: Icon, active }: { icon: React.ElementType; active?: boolean }) {
-  return (
-    <button
-      className={`flex items-center justify-center w-8 h-8 rounded-small transition-colors ${
-        active ? "text-text-default" : "text-text-muted hover:text-text-default"
-      }`}
-    >
-      <Icon className="w-4 h-4" strokeWidth={active ? 2.5 : 2} />
-    </button>
   );
 }

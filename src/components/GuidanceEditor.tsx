@@ -1,6 +1,5 @@
 "use client";
 
-import { Sparkles, Trash2, X } from "lucide-react";
 import { GuidanceRule, GuidanceCategory, CATEGORY_META } from "@/lib/types";
 
 interface GuidanceEditorProps {
@@ -35,7 +34,7 @@ export function GuidanceEditor({
   const meta = CATEGORY_META[category];
 
   return (
-    <div className="bg-base-module border border-accent-border rounded-small overflow-hidden shadow-level-0">
+    <div className="bg-base-module border border-accent-border rounded-small overflow-hidden shadow-level-0 animate-in">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-border">
         <div className="flex items-center gap-2">
@@ -64,8 +63,8 @@ export function GuidanceEditor({
             </span>
           )}
         </div>
-        <button onClick={onCancel} className="text-text-disabled hover:text-text-muted transition-colors">
-          <X className="w-4 h-4" />
+        <button onClick={onCancel} className="text-text-disabled hover:text-text-muted transition-colors duration-200 p-1">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
         </button>
       </div>
 
@@ -88,12 +87,11 @@ export function GuidanceEditor({
             <button
               key={ex}
               onClick={() => onTitleChange(ex)}
-              className="text-[12px] px-3 py-1 bg-neutral-container hover:bg-neutral-container-emphasis text-text-default rounded-max transition-colors"
+              className="text-[12px] px-3 py-1 bg-neutral-container hover:bg-neutral-container-emphasis text-text-default rounded-max transition-colors duration-200"
             >
               {ex}
             </button>
           ))}
-          <button className="text-text-disabled hover:text-text-muted p-1 transition-colors">...</button>
         </div>
       )}
 
@@ -103,14 +101,14 @@ export function GuidanceEditor({
           {onImprove && (
             <button
               onClick={onImprove}
-              className="flex items-center gap-1.5 text-[13px] font-semibold text-accent-fill hover:text-accent-fill-emphasis bg-accent-container hover:bg-accent-container-emphasis px-3 py-1.5 rounded-small transition-colors"
+              className="flex items-center gap-1.5 text-[13px] font-semibold text-accent-fill hover:text-accent-fill-emphasis bg-accent-container hover:bg-accent-container-emphasis px-3 py-1.5 rounded-small transition-colors duration-200"
             >
-              <Sparkles className="w-3.5 h-3.5" />
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1l1.5 4.5H14l-3.5 2.5L12 13 8 10l-4 3 1.5-5L2 5.5h4.5L8 1z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" fill="none"/></svg>
               Improve
             </button>
           )}
           {!isNew && (
-            <button className="text-[13px] text-text-muted hover:text-text-default px-2 py-1.5 transition-colors">
+            <button className="text-[13px] text-text-muted hover:text-text-default px-2 py-1.5 transition-colors duration-200">
               Examples
             </button>
           )}
@@ -120,31 +118,33 @@ export function GuidanceEditor({
           {onDelete && (
             <button
               onClick={onDelete}
-              className="text-text-disabled hover:text-error-fill p-1.5 transition-colors"
+              className="text-text-disabled hover:text-error-fill p-1.5 transition-colors duration-200"
             >
-              <Trash2 className="w-4 h-4" />
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M6 4V3a1 1 0 011-1h2a1 1 0 011 1v1M5 4v8a1 1 0 001 1h4a1 1 0 001-1V4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </button>
           )}
           <button
             onClick={onCancel}
-            className="text-[13px] text-text-muted hover:text-text-default px-3 py-1.5 rounded-small transition-colors"
+            className="text-[13px] text-text-muted hover:text-text-default px-3 py-1.5 rounded-small transition-colors duration-200"
           >
             Cancel
           </button>
           {onEnable && rule && !rule.enabled && (
             <button
               onClick={onEnable}
-              className="flex items-center gap-1 text-[13px] font-semibold text-text-default bg-base-module border border-neutral-border hover:bg-neutral-container px-3 py-1.5 rounded-max transition-colors"
+              className="flex items-center gap-1 text-[13px] font-semibold text-text-default bg-base-module border border-neutral-border hover:bg-neutral-container px-3 py-1.5 rounded-max transition-colors duration-200"
             >
-              ▶ Enable
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 2l7 4-7 4V2z" fill="currentColor"/></svg>
+              Enable
             </button>
           )}
           <button
             onClick={onSave}
             disabled={!draftContent.trim()}
-            className="flex items-center gap-1 text-[13px] font-semibold text-neutral-text-on-fill bg-neutral-fill hover:bg-neutral-fill-emphasis disabled:bg-neutral-container disabled:text-text-disabled px-4 py-1.5 rounded-max transition-colors"
+            className="flex items-center gap-1 text-[13px] font-semibold text-neutral-text-on-fill bg-neutral-fill hover:bg-neutral-fill-emphasis disabled:bg-neutral-container disabled:text-text-disabled px-4 py-1.5 rounded-max transition-colors duration-200"
           >
-            ✓ Save
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            Save
           </button>
         </div>
       </div>

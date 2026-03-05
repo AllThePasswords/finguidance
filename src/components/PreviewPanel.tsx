@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { RotateCcw, X, Bot, Send } from "lucide-react";
 import { GuidanceRule } from "@/lib/types";
 
 interface PreviewPanelProps {
@@ -58,22 +57,24 @@ export function PreviewPanel({ rules, onClose }: PreviewPanelProps) {
   }
 
   return (
-    <aside className="w-96 bg-base-module border-l border-neutral-border flex flex-col h-screen shrink-0">
+    <aside className="w-96 bg-base-module border-l border-neutral-border flex flex-col h-screen shrink-0 animate-slide-in">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-border">
         <h3 className="text-[14px] font-semibold text-text-default">Preview</h3>
         <div className="flex items-center gap-1">
           <button
             onClick={handleReset}
-            className="text-text-disabled hover:text-text-muted p-1 rounded-small transition-colors"
+            className="text-text-disabled hover:text-text-muted p-1 rounded-small transition-colors duration-200"
+            title="Reset"
           >
-            <RotateCcw className="w-4 h-4" />
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 8a5.5 5.5 0 019.78-3.45M13.5 8a5.5 5.5 0 01-9.78 3.45" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><path d="M12.5 2v3h-3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
           <button
             onClick={onClose}
-            className="text-text-disabled hover:text-text-muted p-1 rounded-small transition-colors"
+            className="text-text-disabled hover:text-text-muted p-1 rounded-small transition-colors duration-200"
+            title="Close"
           >
-            <X className="w-4 h-4" />
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
           </button>
         </div>
       </div>
@@ -82,7 +83,7 @@ export function PreviewPanel({ rules, onClose }: PreviewPanelProps) {
       <div className="px-4 py-3 border-b border-neutral-border">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-full bg-neutral-fill flex items-center justify-center">
-            <Bot className="w-4 h-4 text-neutral-text-on-fill" />
+            <img src="/icons/ai-automation.svg" alt="" className="w-4 h-4 invert" />
           </div>
           <div className="text-[13px] font-semibold text-text-default">
             Fin &bull; AI Agent
@@ -98,8 +99,8 @@ export function PreviewPanel({ rules, onClose }: PreviewPanelProps) {
       </div>
 
       {/* Active rules indicator */}
-      <div className="mx-4 mt-2 p-3 bg-error-container border border-error-container rounded-small">
-        <p className="text-[12px] text-error-fill leading-4">
+      <div className="mx-4 mt-2 p-3 bg-accent-container/50 border border-accent-border/50 rounded-small">
+        <p className="text-[12px] text-text-muted leading-4">
           Whenever you update a piece of Guidance, you can test it here without having to save or enable it.
         </p>
       </div>
@@ -109,7 +110,7 @@ export function PreviewPanel({ rules, onClose }: PreviewPanelProps) {
         {messages.map((msg) => (
           <div
             key={msg.id}
-            className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+            className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} animate-fade-up`}
           >
             <div
               className={`max-w-[85%] rounded-small px-3 py-2 text-[13px] leading-5 ${
@@ -137,9 +138,9 @@ export function PreviewPanel({ rules, onClose }: PreviewPanelProps) {
           <button
             onClick={handleSend}
             disabled={!input.trim()}
-            className="text-text-disabled hover:text-accent-fill disabled:text-neutral-border transition-colors"
+            className="text-text-disabled hover:text-accent-fill disabled:text-neutral-border transition-colors duration-200"
           >
-            <Send className="w-4 h-4" />
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M14 2L7 9M14 2l-4.5 12-2-5.5L2 7l12-5z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
         </div>
       </div>

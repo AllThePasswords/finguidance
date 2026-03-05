@@ -6,12 +6,14 @@ import { SEED_RULES } from "./seed-data";
 
 let nextId = 100;
 
-export function useGuidanceStore() {
-  const [rules, setRules] = useState<GuidanceRule[]>(SEED_RULES);
+export function useGuidanceStore(startEmpty = false) {
+  const [rules, setRules] = useState<GuidanceRule[]>(startEmpty ? [] : SEED_RULES);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draftContent, setDraftContent] = useState("");
   const [draftTitle, setDraftTitle] = useState("");
-  const [creatingCategory, setCreatingCategory] = useState<GuidanceCategory | null>(null);
+  const [creatingCategory, setCreatingCategory] = useState<GuidanceCategory | null>(
+    startEmpty ? "communication_style" : null
+  );
 
   const rulesByCategory = useCallback(
     (cat: GuidanceCategory) => rules.filter((r) => r.category === cat),

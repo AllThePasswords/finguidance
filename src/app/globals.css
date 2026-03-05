@@ -27,10 +27,10 @@
   /* Focus (blue — matches Intercom product) */
   --color-focus-ring: #0066FF;
 
-  /* Beta (purple) */
-  --color-beta-container: #f0edf8;
-  --color-beta-container-emphasis: #ddd6f0;
-  --color-beta-fill: #6b47c9;
+  /* Beta (blue) */
+  --color-beta-container: #D7E7FE;
+  --color-beta-container-emphasis: #b8d4fd;
+  --color-beta-fill: #1a1a1a;
   --color-beta-text-on-fill: #ffffff;
 
   /* Success */

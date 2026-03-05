@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { IconRail } from "@/components/IconRail";
 import { Sidebar } from "@/components/Sidebar";
 import { CategorySection } from "@/components/CategorySection";
@@ -17,7 +18,9 @@ const CATEGORIES: GuidanceCategory[] = [
 ];
 
 export default function GuidancePage() {
-  const store = useGuidanceStore();
+  const searchParams = useSearchParams();
+  const seeded = searchParams.get("seeded") === "1";
+  const store = useGuidanceStore(!seeded);
   const [showPreview, setShowPreview] = useState(true);
 
   const hasRules = store.totalCount > 0;
@@ -31,7 +34,7 @@ export default function GuidancePage() {
       <Sidebar totalGuidanceCount={store.totalCount} />
 
       {/* Focus module (main content) */}
-      <main className="flex-1 overflow-y-auto bg-base-module rounded-large shadow-level-0 my-2 mr-2">
+      <main className="flex-1 overflow-y-auto bg-base-module rounded-large shadow-level-0 my-2 mx-2">
         {/* Page header */}
         <div className="sticky top-0 z-10 bg-base-module border-b border-dashed border-neutral-border px-6 py-4">
           <div className="flex items-center justify-between">
@@ -48,47 +51,39 @@ export default function GuidancePage() {
             </div>
             <div className="flex items-center gap-1">
               <button
-                className="flex items-center gap-1 text-[14px] font-semibold text-text-default bg-neutral-container hover:bg-neutral-container-emphasis h-8 min-w-[32px] px-2 rounded-max transition-colors duration-200"
-              >
-                <img src="/icons/new-window.svg" alt="" className="w-4 h-4" />
-              </button>
-              <button
                 className="flex items-center gap-1 text-[14px] font-semibold text-text-default bg-neutral-container hover:bg-neutral-container-emphasis h-8 min-w-[32px] px-3 rounded-max transition-colors duration-200"
                 onClick={() => setShowPreview(!showPreview)}
               >
                 <img src="/icons/knowledge-learn.svg" alt="" className="w-4 h-4" />
-                {showPreview ? "Hide Preview" : "Show Preview"}
+                Learn
+                <svg width="8" height="5" viewBox="0 0 8 5" fill="none" className="shrink-0 ml-0.5"><path d="M1 1l3 3 3-3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </button>
             </div>
           </div>
         </div>
 
-        {/* Content — empty state or category sections */}
-        {hasRules ? (
-          <div className="px-6 max-w-3xl">
-            {CATEGORIES.map((cat) => (
-              <CategorySection
-                key={cat}
-                category={cat}
-                rules={store.rulesByCategory(cat)}
-                editingId={store.editingId}
-                isCreating={store.creatingCategory === cat}
-                draftTitle={store.draftTitle}
-                draftContent={store.draftContent}
-                onTitleChange={store.setDraftTitle}
-                onContentChange={store.setDraftContent}
-                onStartCreate={() => store.startCreate(cat)}
-                onStartEdit={store.startEdit}
-                onSave={store.saveRule}
-                onCancel={store.cancelEdit}
-                onDelete={store.deleteRule}
-                onToggleEnabled={store.toggleEnabled}
-              />
-            ))}
-          </div>
-        ) : (
-          <EmptyState onAddFirst={() => store.startCreate("communication_style")} />
-        )}
+        {/* Content — category sections (each shows its own empty state when no rules) */}
+        <div className="px-6">
+          {CATEGORIES.map((cat) => (
+            <CategorySection
+              key={cat}
+              category={cat}
+              rules={store.rulesByCategory(cat)}
+              editingId={store.editingId}
+              isCreating={store.creatingCategory === cat}
+              draftTitle={store.draftTitle}
+              draftContent={store.draftContent}
+              onTitleChange={store.setDraftTitle}
+              onContentChange={store.setDraftContent}
+              onStartCreate={() => store.startCreate(cat)}
+              onStartEdit={store.startEdit}
+              onSave={store.saveRule}
+              onCancel={store.cancelEdit}
+              onDelete={store.deleteRule}
+              onToggleEnabled={store.toggleEnabled}
+            />
+          ))}
+        </div>
       </main>
 
       {/* Preview panel */}

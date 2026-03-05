@@ -118,9 +118,7 @@ export function GuidanceEditor({
           )}
         </div>
         <button onClick={onCancel} className="text-text-disabled hover:text-text-muted transition-colors duration-200 p-1 ml-2 shrink-0">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="rotate-90 transition-transform duration-200">
-            <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+          <img src="/icons/disclose.svg" alt="" className="w-3 h-[7px] transition-transform duration-200" />
         </button>
       </div>
 

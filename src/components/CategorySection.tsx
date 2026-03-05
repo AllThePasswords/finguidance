@@ -40,11 +40,11 @@ export function CategorySection({
   const meta = CATEGORY_META[category];
 
   return (
-    <section className="py-6 border-b border-dashed border-neutral-border last:border-b-0">
+    <section className="py-4">
       {/* Section header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <img src={meta.iconPath} alt="" className="w-4 h-4 opacity-60" />
+          <img src={meta.iconPath} alt="" className="w-4 h-4" />
           <h2 className="text-[14px] font-semibold text-text-default">
             {meta.label}
           </h2>
@@ -52,15 +52,15 @@ export function CategorySection({
         </div>
         <button
           onClick={onStartCreate}
-          className="flex items-center justify-center w-8 h-8 rounded-small text-text-disabled hover:text-text-muted hover:bg-neutral-container transition-all duration-200"
+          className="flex items-center justify-center w-8 h-8 rounded-full bg-neutral-container text-text-default hover:bg-neutral-container-emphasis transition-all duration-200"
         >
-          <img src="/icons/new.svg" alt="Add" className="w-4 h-4 opacity-40" />
+          <img src="/icons/add.svg" alt="" className="w-3 h-3" />
         </button>
       </div>
 
       {/* Empty state — description + See examples */}
       {rules.length === 0 && !isCreating && (
-        <div className="bg-neutral-container/50 rounded-small px-4 py-3">
+        <div className="bg-base-module-subtle rounded-[12px] px-4 py-3">
           <span className="text-[13px] text-text-muted">
             {meta.description}
           </span>

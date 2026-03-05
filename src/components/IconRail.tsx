@@ -15,8 +15,8 @@ export function IconRail() {
       {/* Top: logo + nav icons */}
       <div className="flex flex-col items-center w-full">
         {/* Logo */}
-        <div className="flex items-center justify-center p-4 w-full">
-          <img src="/icons/mark.svg" alt="Intercom" className="w-4 h-4" />
+        <div className="flex items-center justify-center py-3 w-full">
+          <img src="/icons/mark.svg" alt="Intercom" className="w-[21px] h-[21px]" />
         </div>
 
         {/* Nav icons */}
@@ -35,13 +35,15 @@ export function IconRail() {
 
       {/* Bottom: settings + avatar */}
       <div className="flex flex-col items-center gap-1 pb-4 w-full">
-        <button className="flex items-center justify-center w-8 h-8 rounded-small bg-base-module border border-neutral-border shadow-level-0 px-2 py-1 transition-colors hover:bg-neutral-container">
+        <button className="flex items-center justify-center w-8 h-8 rounded-small px-2 py-1 transition-colors hover:bg-neutral-container">
           <img src="/icons/settings.svg" alt="Settings" className="w-4 h-4" />
         </button>
         <button className="flex items-center justify-center w-8 h-8 rounded-small px-2 py-1">
-          <div className="relative w-4 h-4">
-            <img src="/icons/avatar.svg" alt="Profile" className="w-4 h-4 rounded-full" />
-            <div className="absolute -bottom-0.5 -right-0.5 w-[6px] h-[6px] rounded-full bg-success-fill border border-base-backdrop" />
+          <div className="relative">
+            <div className="w-5 h-5 rounded-full bg-[#2FB5A0] flex items-center justify-center text-[9px] font-semibold text-white leading-none">
+              E
+            </div>
+            <div className="absolute -bottom-0.5 -right-0.5 w-[7px] h-[7px] rounded-full bg-success-fill border-[1.5px] border-base-backdrop" />
           </div>
         </button>
       </div>

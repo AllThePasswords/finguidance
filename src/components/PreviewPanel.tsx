@@ -123,14 +123,14 @@ export function PreviewPanel({ rules, onClose }: PreviewPanelProps) {
             className="flex items-center justify-center w-7 h-7 rounded-full bg-neutral-container text-text-muted hover:bg-neutral-container-emphasis transition-colors duration-200"
             title="Reset"
           >
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2.5 8a5.5 5.5 0 019.78-3.45M13.5 8a5.5 5.5 0 01-9.78 3.45" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><path d="M12.5 2v3h-3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <img src="/icons/refresh.svg" alt="" className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={onClose}
             className="flex items-center justify-center w-7 h-7 rounded-full bg-neutral-container text-text-muted hover:bg-neutral-container-emphasis transition-colors duration-200"
             title="Close"
           >
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+            <img src="/icons/close.svg" alt="" className="w-2.5 h-2.5" />
           </button>
         </div>
       </div>
@@ -139,18 +139,18 @@ export function PreviewPanel({ rules, onClose }: PreviewPanelProps) {
       <div className="card-gradient-border square-bl mx-4 mt-3 px-4 py-4">
         <div className="flex items-center gap-2 mb-3">
           <img src="/icons/ai-automation.svg" alt="" className="w-5 h-5" />
-          <div className="text-[13px] font-semibold text-text-default">
+          <div className="text-[13px] font-semibold text-[#20284D]">
             Fin &bull; AI Agent
           </div>
         </div>
-        <p className="text-[13px] text-text-default leading-5">
+        <p className="text-[13px] text-[#20284D] leading-5">
           👉 You can test your Guidance here to see how Fin would answer your customers&apos; questions.
         </p>
       </div>
 
       {/* Second info card — AI gradient border, square top-left */}
       <div className="card-gradient-border square-tl mx-4 mt-2 px-4 py-4">
-        <p className="text-[13px] text-text-muted leading-5">
+        <p className="text-[13px] text-[#20284D] leading-5">
           Whenever you update a piece of Guidance, you can test it here without having to save or enable it.
         </p>
       </div>
@@ -194,7 +194,7 @@ export function PreviewPanel({ rules, onClose }: PreviewPanelProps) {
 
       {/* Chat input — tall box with text on top, icons row below */}
       <div className="px-4 pb-4 pt-2">
-        <div className="bg-base-inputs border-2 border-neutral-border focus-within:border-neutral-fill rounded-[16px] px-4 pt-3 pb-2 transition-colors duration-200">
+        <div className="bg-base-inputs border-2 border-neutral-border focus-within:border-neutral-fill rounded-[16px] pl-4 pr-3 pt-3 pb-3 transition-colors duration-200">
           <input
             className="w-full bg-transparent text-[14px] outline-none placeholder:text-text-disabled text-text-default mb-2"
             placeholder="Ask a question..."
@@ -225,9 +225,9 @@ export function PreviewPanel({ rules, onClose }: PreviewPanelProps) {
             <button
               onClick={handleSend}
               disabled={!input.trim() || isStreaming}
-              className="text-text-disabled hover:text-accent-fill disabled:text-neutral-border transition-colors duration-200"
+              className="flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-200 disabled:bg-neutral-container disabled:text-text-disabled bg-neutral-fill text-white hover:bg-neutral-fill-emphasis"
             >
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M16 2L8 10M16 2l-5 14-2.5-6.5L2 8l14-6z" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 12V4M8 4l-3.5 3.5M8 4l3.5 3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </button>
           </div>
         </div>

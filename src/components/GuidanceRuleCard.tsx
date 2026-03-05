@@ -35,11 +35,7 @@ export function GuidanceRuleCard({ rule, isEditing, onEdit }: GuidanceRuleCardPr
           </div>
           <p className="text-[13px] text-text-muted leading-5 line-clamp-2">{rule.content}</p>
         </div>
-        <img
-          src="/icons/thin-right-arrow.svg"
-          alt=""
-          className="w-4 h-4 mt-1 shrink-0 opacity-30 group-hover:opacity-60 transition-opacity duration-200"
-        />
+        <img src="/icons/disclose.svg" alt="" className="w-3 h-[7px] shrink-0 mt-1 -rotate-90 opacity-40 group-hover:opacity-60 transition-opacity duration-200" />
       </div>
     </button>
   );

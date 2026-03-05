@@ -6,7 +6,7 @@ interface SidebarProps {
 
 export function Sidebar({ totalGuidanceCount }: SidebarProps) {
   return (
-    <aside className="w-[247px] bg-base-module-subtle rounded-large shadow-level-0 flex flex-col h-screen shrink-0 overflow-clip">
+    <aside className="w-[247px] bg-base-module-subtle rounded-large shadow-level-0 flex flex-col shrink-0 overflow-clip my-2">
       {/* Header - p-16 from Figma */}
       <div className="flex items-start justify-between p-4">
         <div className="flex items-center pl-2">

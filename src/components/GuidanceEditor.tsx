@@ -118,7 +118,11 @@ export function GuidanceEditor({
           )}
         </div>
         <button onClick={onCancel} className="hover:opacity-70 transition-opacity duration-200 p-1 ml-2 shrink-0">
-          <img src="/icons/close.svg" alt="Close" className="w-[11px] h-[11px]" />
+          {isNew ? (
+            <img src="/icons/close.svg" alt="Close" className="w-[11px] h-[11px]" />
+          ) : (
+            <img src="/icons/disclose.svg" alt="Collapse" className="w-3 h-[7px] rotate-180" />
+          )}
         </button>
       </div>
 

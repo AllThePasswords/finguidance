@@ -14,7 +14,7 @@ export function GuidanceRuleCard({ rule, isEditing, onEdit }: GuidanceRuleCardPr
   return (
     <button
       onClick={() => onEdit(rule.id)}
-      className="w-full text-left bg-base-module border border-neutral-border rounded-small p-4 hover:border-neutral-border-emphasis hover:shadow-level-0 transition-all duration-200 group"
+      className="w-full text-left bg-base-module border border-neutral-border rounded-[16px] p-4 hover:border-neutral-border-emphasis hover:shadow-level-0 transition-all duration-200 group"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">

@@ -112,30 +112,30 @@ export function PreviewPanel({ rules, onClose }: PreviewPanelProps) {
   }
 
   return (
-    <aside className="w-96 bg-base-module border-l border-neutral-border flex flex-col h-screen shrink-0 animate-slide-in">
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-border">
+    <aside className="w-96 bg-base-module rounded-large my-2 mr-2 shadow-level-0 flex flex-col shrink-0 animate-slide-in overflow-hidden">
+      {/* Header — gray circle bg for "Preview", refresh and close icons, dotted line below */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-dashed border-neutral-border">
         <h3 className="text-[14px] font-semibold text-text-default">Preview</h3>
         <div className="flex items-center gap-1">
           <button
             onClick={handleReset}
-            className="text-text-disabled hover:text-text-muted p-1 rounded-small transition-colors duration-200"
+            className="flex items-center justify-center w-7 h-7 rounded-full bg-neutral-container text-text-muted hover:bg-neutral-container-emphasis transition-colors duration-200"
             title="Reset"
           >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 8a5.5 5.5 0 019.78-3.45M13.5 8a5.5 5.5 0 01-9.78 3.45" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><path d="M12.5 2v3h-3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2.5 8a5.5 5.5 0 019.78-3.45M13.5 8a5.5 5.5 0 01-9.78 3.45" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><path d="M12.5 2v3h-3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
           <button
             onClick={onClose}
-            className="text-text-disabled hover:text-text-muted p-1 rounded-small transition-colors duration-200"
+            className="flex items-center justify-center w-7 h-7 rounded-full bg-neutral-container text-text-muted hover:bg-neutral-container-emphasis transition-colors duration-200"
             title="Close"
           >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
           </button>
         </div>
       </div>
 
       {/* Agent header */}
-      <div className="px-4 py-3 border-b border-neutral-border">
+      <div className="px-4 py-3 border-b border-dashed border-neutral-border">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-full bg-neutral-fill flex items-center justify-center">
             <img src="/icons/ai-automation.svg" alt="" className="w-4 h-4 invert" />
@@ -146,16 +146,15 @@ export function PreviewPanel({ rules, onClose }: PreviewPanelProps) {
         </div>
       </div>
 
-      {/* Info banner */}
-      <div className="mx-4 mt-3 p-3 bg-accent-container border border-accent-border rounded-small">
-        <p className="text-[12px] text-accent-fill-emphasis leading-4">
+      {/* Info banners — light warm gray, not orange */}
+      <div className="mx-4 mt-3 p-3 bg-neutral-container/60 border border-neutral-border rounded-small">
+        <p className="text-[12px] text-text-muted leading-4">
           You can test your Guidance here to see how Fin would answer your customers&apos; questions.
         </p>
       </div>
 
-      {/* Active rules indicator */}
-      <div className="mx-4 mt-2 p-3 bg-accent-container/50 border border-accent-border/50 rounded-small">
-        <p className="text-[12px] text-text-muted leading-4">
+      <div className="mx-4 mt-2 p-3 bg-neutral-container/40 border border-neutral-border/60 rounded-small">
+        <p className="text-[12px] text-text-disabled leading-4">
           Whenever you update a piece of Guidance, you can test it here without having to save or enable it.
         </p>
       </div>
@@ -173,10 +172,10 @@ export function PreviewPanel({ rules, onClose }: PreviewPanelProps) {
               </div>
             )}
             <div
-              className={`max-w-[85%] rounded-small px-3 py-2 text-[13px] leading-5 ${
+              className={`max-w-[85%] px-3 py-2 text-[13px] leading-5 ${
                 msg.role === "user"
-                  ? "bg-neutral-fill text-neutral-text-on-fill"
-                  : "bg-neutral-container text-text-default"
+                  ? "bg-neutral-fill text-neutral-text-on-fill rounded-[16px] rounded-br-[4px]"
+                  : "bg-neutral-container text-text-default rounded-[16px] rounded-bl-[4px]"
               }`}
             >
               {msg.content || (
@@ -191,21 +190,30 @@ export function PreviewPanel({ rules, onClose }: PreviewPanelProps) {
         ))}
       </div>
 
-      {/* Input */}
-      <div className="border-t border-neutral-border p-3">
-        <div className="flex items-center gap-2 bg-base-inputs border border-neutral-border rounded-small px-3 py-2">
+      {/* Chat input — rounded pill, placeholder "Message...", attachment + emoji + send icons */}
+      <div className="px-4 pb-4 pt-2">
+        <div className="flex items-center gap-2 bg-base-inputs border border-neutral-border rounded-max px-4 py-2.5">
+          {/* Attach icon */}
+          <button className="text-text-disabled hover:text-text-muted transition-colors duration-200 shrink-0">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7.5 4.5v5a1.5 1.5 0 003 0V5a3 3 0 00-6 0v5.5a4.5 4.5 0 009 0V4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>
+          </button>
           <input
             className="flex-1 bg-transparent text-[13px] outline-none placeholder:text-text-disabled text-text-default"
-            placeholder="Ask a question..."
+            placeholder="Message..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
             disabled={isStreaming}
           />
+          {/* Emoji icon */}
+          <button className="text-text-disabled hover:text-text-muted transition-colors duration-200 shrink-0">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2"/><path d="M5.5 9.5s1 1.5 2.5 1.5 2.5-1.5 2.5-1.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><circle cx="6" cy="6.5" r="0.75" fill="currentColor"/><circle cx="10" cy="6.5" r="0.75" fill="currentColor"/></svg>
+          </button>
+          {/* Send button */}
           <button
             onClick={handleSend}
             disabled={!input.trim() || isStreaming}
-            className="text-text-disabled hover:text-accent-fill disabled:text-neutral-border transition-colors duration-200"
+            className="text-text-disabled hover:text-accent-fill disabled:text-neutral-border transition-colors duration-200 shrink-0"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M14 2L7 9M14 2l-4.5 12-2-5.5L2 7l12-5z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>

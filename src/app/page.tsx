@@ -5,6 +5,7 @@ import { IconRail } from "@/components/IconRail";
 import { Sidebar } from "@/components/Sidebar";
 import { CategorySection } from "@/components/CategorySection";
 import { PreviewPanel } from "@/components/PreviewPanel";
+import { EmptyState } from "@/components/EmptyState";
 import { useGuidanceStore } from "@/lib/store";
 import { GuidanceCategory } from "@/lib/types";
 
@@ -19,6 +20,8 @@ export default function GuidancePage() {
   const store = useGuidanceStore();
   const [showPreview, setShowPreview] = useState(true);
 
+  const hasRules = store.totalCount > 0;
+
   return (
     <div className="flex h-screen overflow-hidden bg-base-backdrop">
       {/* Icon rail */}
@@ -27,9 +30,9 @@ export default function GuidancePage() {
       {/* Sidebar navigation */}
       <Sidebar totalGuidanceCount={store.totalCount} />
 
-      {/* Focus module (main content) - Figma: bg-white, rounded-large, shadow-level-0 */}
-      <main className="flex-1 overflow-y-auto bg-base-module rounded-large shadow-level-0">
-        {/* Page header - Figma: px-24 py-16 */}
+      {/* Focus module (main content) */}
+      <main className="flex-1 overflow-y-auto bg-base-module rounded-large shadow-level-0 my-2 mr-2">
+        {/* Page header */}
         <div className="sticky top-0 z-10 bg-base-module border-b border-dashed border-neutral-border px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -60,28 +63,32 @@ export default function GuidancePage() {
           </div>
         </div>
 
-        {/* Category sections - Figma: px-24 */}
-        <div className="px-6 max-w-3xl">
-          {CATEGORIES.map((cat) => (
-            <CategorySection
-              key={cat}
-              category={cat}
-              rules={store.rulesByCategory(cat)}
-              editingId={store.editingId}
-              isCreating={store.creatingCategory === cat}
-              draftTitle={store.draftTitle}
-              draftContent={store.draftContent}
-              onTitleChange={store.setDraftTitle}
-              onContentChange={store.setDraftContent}
-              onStartCreate={() => store.startCreate(cat)}
-              onStartEdit={store.startEdit}
-              onSave={store.saveRule}
-              onCancel={store.cancelEdit}
-              onDelete={store.deleteRule}
-              onToggleEnabled={store.toggleEnabled}
-            />
-          ))}
-        </div>
+        {/* Content — empty state or category sections */}
+        {hasRules ? (
+          <div className="px-6 max-w-3xl">
+            {CATEGORIES.map((cat) => (
+              <CategorySection
+                key={cat}
+                category={cat}
+                rules={store.rulesByCategory(cat)}
+                editingId={store.editingId}
+                isCreating={store.creatingCategory === cat}
+                draftTitle={store.draftTitle}
+                draftContent={store.draftContent}
+                onTitleChange={store.setDraftTitle}
+                onContentChange={store.setDraftContent}
+                onStartCreate={() => store.startCreate(cat)}
+                onStartEdit={store.startEdit}
+                onSave={store.saveRule}
+                onCancel={store.cancelEdit}
+                onDelete={store.deleteRule}
+                onToggleEnabled={store.toggleEnabled}
+              />
+            ))}
+          </div>
+        ) : (
+          <EmptyState onAddFirst={() => store.startCreate("communication_style")} />
+        )}
       </main>
 
       {/* Preview panel */}

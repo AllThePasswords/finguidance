@@ -19,6 +19,7 @@ interface CategorySectionProps {
   onCancel: () => void;
   onDelete: (id: string) => void;
   onToggleEnabled: (id: string) => void;
+  onSeeExamples: () => void;
 }
 
 export function CategorySection({
@@ -36,6 +37,7 @@ export function CategorySection({
   onCancel,
   onDelete,
   onToggleEnabled,
+  onSeeExamples,
 }: CategorySectionProps) {
   const meta = CATEGORY_META[category];
 
@@ -65,7 +67,7 @@ export function CategorySection({
             {meta.description}
           </span>
           {"  "}
-          <button onClick={onStartCreate} className="text-[13px] text-text-default hover:underline font-medium">
+          <button onClick={onSeeExamples} className="text-[13px] text-text-default hover:underline font-medium">
             See examples &rsaquo;
           </button>
         </div>

@@ -7,7 +7,8 @@ import { Sidebar } from "@/components/Sidebar";
 import { CategorySection } from "@/components/CategorySection";
 import { PreviewPanel } from "@/components/PreviewPanel";
 import { useGuidanceStore } from "@/lib/store";
-import { GuidanceCategory } from "@/lib/types";
+import { GuidanceCategory, GuidanceExample } from "@/lib/types";
+import { TemplatesModal } from "@/components/TemplatesModal";
 
 const CATEGORIES: GuidanceCategory[] = [
   "communication_style",
@@ -22,6 +23,7 @@ function GuidancePageInner() {
   const store = useGuidanceStore(!seeded);
   const [showPreview, setShowPreview] = useState(true);
   const [showLearnMenu, setShowLearnMenu] = useState(false);
+  const [templateCategory, setTemplateCategory] = useState<GuidanceCategory | null>(null);
   const learnRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -123,6 +125,7 @@ function GuidancePageInner() {
               onCancel={store.cancelEdit}
               onDelete={store.deleteRule}
               onToggleEnabled={store.toggleEnabled}
+              onSeeExamples={() => setTemplateCategory(cat)}
             />
           ))}
         </div>
@@ -133,6 +136,19 @@ function GuidancePageInner() {
         <PreviewPanel
           rules={store.rules}
           onClose={() => setShowPreview(false)}
+        />
+      )}
+
+      {/* Templates modal from "See examples" */}
+      {templateCategory && (
+        <TemplatesModal
+          category={templateCategory}
+          onSelect={(example: GuidanceExample) => {
+            store.startCreate(templateCategory);
+            store.setDraftTitle(example.title);
+            store.setDraftContent(example.content);
+          }}
+          onClose={() => setTemplateCategory(null)}
         />
       )}
     </div>

@@ -24,6 +24,9 @@
   --color-accent-fill-emphasis: #d4571a;
   --color-accent-text-on-fill: #ffffff;
 
+  /* Focus (blue — matches Intercom product) */
+  --color-focus-ring: #0066FF;
+
   /* Beta (purple) */
   --color-beta-container: #f0edf8;
   --color-beta-container-emphasis: #ddd6f0;
@@ -97,16 +100,67 @@ body {
   animation: fade-up 0.2s ease-out;
 }
 
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 2s linear infinite;
+}
+
+/* Gradient border button (Improve) */
+.btn-gradient-border {
+  position: relative;
+  background: transparent;
+  border: none;
+  z-index: 0;
+}
+
+.btn-gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 100px;
+  padding: 1.5px;
+  background: linear-gradient(135deg, #FCAE88, #DB57A2, #620777);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: -1;
+}
+
+/* Shimmering gradient text for checking state */
+@keyframes shimmer-text {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    #FCAE88 0%,
+    #DB57A2 25%,
+    #620777 50%,
+    #DB57A2 75%,
+    #FCAE88 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer-text 3s linear infinite;
+}
+
 /* Smooth scroll for main content */
 main {
   scroll-behavior: smooth;
 }
 
 /* Focus ring for accessibility */
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible {
-  outline: 2px solid var(--color-accent-fill);
+button:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
   outline-offset: 2px;
   border-radius: 4px;
 }

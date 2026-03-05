@@ -58,12 +58,15 @@ export function CategorySection({
         </button>
       </div>
 
-      {/* Rules or empty state */}
+      {/* Empty state — description + See examples */}
       {rules.length === 0 && !isCreating && (
-        <div className="text-[13px] text-text-disabled py-2 pl-1">
-          {meta.description}{" "}
-          <button onClick={onStartCreate} className="text-accent-fill hover:underline">
-            See examples
+        <div className="bg-neutral-container/50 rounded-small px-4 py-3">
+          <span className="text-[13px] text-text-muted">
+            {meta.description}
+          </span>
+          {"  "}
+          <button onClick={onStartCreate} className="text-[13px] text-text-default hover:underline font-medium">
+            See examples &rsaquo;
           </button>
         </div>
       )}
@@ -83,7 +86,6 @@ export function CategorySection({
               onCancel={onCancel}
               onDelete={() => onDelete(rule.id)}
               onEnable={() => onToggleEnabled(rule.id)}
-              onImprove={() => {}}
             />
           ) : (
             <GuidanceRuleCard

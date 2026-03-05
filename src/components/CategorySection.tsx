@@ -40,7 +40,7 @@ export function CategorySection({
   const meta = CATEGORY_META[category];
 
   return (
-    <section className="mb-8">
+    <section className="py-6 border-b border-dashed border-neutral-border last:border-b-0">
       {/* Section header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">

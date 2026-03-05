@@ -60,8 +60,8 @@ export default function GuidancePage() {
           </div>
         </div>
 
-        {/* Category sections - Figma: px-24 py-24 */}
-        <div className="px-6 py-6 max-w-3xl">
+        {/* Category sections - Figma: px-24 */}
+        <div className="px-6 max-w-3xl">
           {CATEGORIES.map((cat) => (
             <CategorySection
               key={cat}

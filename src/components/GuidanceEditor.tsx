@@ -1,9 +1,82 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { GuidanceRule, GuidanceCategory, CATEGORY_META } from "@/lib/types";
 import { ChipTooltip } from "./ChipTooltip";
 import { TemplatesModal } from "./TemplatesModal";
+
+/* ── Delete confirmation modal ────────────────────────────────────── */
+function DeleteConfirmModal({
+  onConfirm,
+  onCancel,
+}: {
+  onConfirm: () => void;
+  onCancel: () => void;
+}) {
+  const overlayRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") onCancel();
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onCancel]);
+
+  function handleOverlayClick(e: React.MouseEvent) {
+    if (e.target === overlayRef.current) onCancel();
+  }
+
+  return createPortal(
+    <div
+      ref={overlayRef}
+      onClick={handleOverlayClick}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 animate-in"
+    >
+      <div className="bg-base-module rounded-large shadow-level-0 w-full max-w-[480px] overflow-hidden animate-fade-up">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 pt-6 pb-0">
+          <h2 className="text-[16px] font-semibold text-text-default">
+            Delete guidance
+          </h2>
+          <button
+            onClick={onCancel}
+            className="text-text-disabled hover:text-text-muted transition-colors duration-200 p-1"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="px-6 py-4">
+          <p className="text-[14px] text-text-muted leading-5">
+            Are you sure you want to delete this guidance? This action cannot be undone.
+          </p>
+        </div>
+
+        {/* Footer */}
+        <div className="flex items-center justify-end gap-2 px-6 pb-6 pt-2">
+          <button
+            onClick={onCancel}
+            className="text-[13px] font-semibold text-text-default bg-neutral-container hover:bg-neutral-container-emphasis px-4 py-2 rounded-max transition-colors duration-200"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={onConfirm}
+            className="text-[13px] font-semibold text-white bg-error-fill hover:opacity-90 px-4 py-2 rounded-max transition-all duration-200"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}
 
 type ImproveState = "idle" | "checking" | "improved";
 
@@ -45,6 +118,7 @@ export function GuidanceEditor({
   const [originalContent, setOriginalContent] = useState("");
   const [showReason, setShowReason] = useState(false);
   const [showTemplatesModal, setShowTemplatesModal] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handleImprove = useCallback(async () => {
     if (!draftContent.trim()) return;
@@ -153,6 +227,17 @@ export function GuidanceEditor({
             onContentChange(example.content);
           }}
           onClose={() => setShowTemplatesModal(false)}
+        />
+      )}
+
+      {/* Delete confirmation modal */}
+      {showDeleteConfirm && onDelete && (
+        <DeleteConfirmModal
+          onConfirm={() => {
+            setShowDeleteConfirm(false);
+            onDelete();
+          }}
+          onCancel={() => setShowDeleteConfirm(false)}
         />
       )}
 
@@ -271,7 +356,7 @@ export function GuidanceEditor({
             <div className="flex items-center gap-2 animate-in">
               {onDelete && improveState === "idle" && (
                 <button
-                  onClick={onDelete}
+                  onClick={() => setShowDeleteConfirm(true)}
                   className="flex items-center justify-center w-8 h-8 rounded-full bg-neutral-container hover:bg-neutral-container-emphasis transition-colors duration-200"
                   title="Delete"
                 >

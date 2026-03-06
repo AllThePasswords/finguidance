@@ -13,9 +13,8 @@ export async function POST(req: Request) {
     rules: GuidanceRule[];
   };
 
-  const enabledRules = rules.filter((r) => r.enabled);
-
-  const systemPrompt = buildSystemPrompt(enabledRules);
+  // Preview uses ALL rules so users can test before enabling
+  const systemPrompt = buildSystemPrompt(rules);
 
   try {
     const stream = anthropic.messages.stream({
@@ -76,7 +75,7 @@ function buildSystemPrompt(rules: GuidanceRule[]): string {
   lines.push("## Guidance Rules");
   if (rules.length === 0) {
     lines.push(
-      "(No guidance rules are currently enabled. Use your best judgment.)",
+      "(No guidance rules have been created yet. Use your best judgment.)",
       ""
     );
   } else {
